@@ -48,7 +48,7 @@ jobs:
           name: "Say goodbye"
           command: "echo Goodbye, World"
 
-say-goodmorning:
+  say-goodmorning:
     executor:
       name: my-executor
     # Add steps to the job
