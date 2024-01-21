@@ -25,6 +25,16 @@ jobs:
       - run:
           name: "Say hello"
           command: "echo Hello, World"
+
+  sayhello:
+    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/configuration-reference/#executor-job
+    executor:
+      name: my-executor
+    # Add steps to the job
+    # See: https://circleci.com/docs/configuration-reference/#steps
+    steps:
+      - checkout
       - sayhello
 
   say-goodbye:
@@ -55,4 +65,6 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+      - sayhello
       - say-goodbye
+      - say-goodmorning
