@@ -18,9 +18,21 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World"
 
+  say-goodbye:
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: "Say goodbye"
+          command: "echo Goodbye, World"
+
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
+      - say-goodbye
