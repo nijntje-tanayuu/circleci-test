@@ -76,4 +76,7 @@ workflows:
           requires:
             - say-hello
       - say-goodbye
-      - say-goodmorning
+      - say-goodmorning:
+          requires:
+            - say-goodbye
+
