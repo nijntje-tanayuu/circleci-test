@@ -61,10 +61,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/workspace
+          at: /tmp
       - run:
           name: "Say goodmorning"
-          command: "cat /tmp/tmp.txt"
+          command: "ls /tmp/tmp.txt"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
