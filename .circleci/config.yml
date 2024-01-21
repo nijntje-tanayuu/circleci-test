@@ -46,7 +46,12 @@ jobs:
       - checkout
       - run:
           name: "Say goodbye"
-          command: "echo Goodbye, World"
+          command: "echo Goodbye, World >> /tmp/tmp.txt"
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - tmp.txt
+
 
   say-goodmorning:
     executor:
@@ -55,9 +60,11 @@ jobs:
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
+      - attach_workspace:
+          at: /tmp/workspace
       - run:
           name: "Say goodmorning"
-          command: "echo Good morning, World"
+          command: "cat /tmp/tmp.txt"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
@@ -68,7 +75,5 @@ workflows:
       - sayhello:
           requires:
             - say-hello
+      - say-goodbye
       - say-goodmorning
-      - say-goodbye:
-          requires:
-            - say-goodmorning
