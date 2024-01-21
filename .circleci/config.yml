@@ -65,6 +65,10 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-      - sayhello
-      - say-goodbye
+      - sayhello:
+          requires:
+            - say-hello
       - say-goodmorning
+      - say-goodbye:
+          requires:
+            - say-goodmorning
