@@ -1,82 +1,61 @@
 # Use the latest 2.1 version of CircleCI pipeline process engine.
 # See: https://circleci.com/docs/configuration-reference
 version: 2.1
-executors:
-  my-executor:
-    docker:
-      - image: cimg/base:stable
 
-commands:
-  sayhello:
-    steps:
-      - run: echo hello
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
   say-hello:
     # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/configuration-reference/#executor-job
-    executor:
-      name: my-executor
+    docker:
+      - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/configuration-reference/#steps
     steps:
       - checkout
       - run:
           name: "Say hello"
-          command: "echo Hello, World"
-
-  sayhello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
-    executor:
-      name: my-executor
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
-    steps:
-      - checkout
-      - sayhello
-
-  say-goodbye:
-    executor:
-      name: my-executor
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say goodbye"
-          command: "echo Goodbye, World >> /tmp/tmp.txt"
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - tmp.txt
-
-
-  say-goodmorning:
-    executor:
-      name: my-executor
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
+          command: "echo Hello, yutarotanaka!"
+  say-hello2:
+    docker:
+      - image: cimg/base:stable
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp
+          at: /tmp/workspace
       - run:
-          name: "Say goodmorning"
-          command: "cat /tmp/tmp.txt"
-
+          name: "Say hello"
+          command: "ls /tmp/workspace/file.txt"
+  say-hello3:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Say hello"
+          command: "mkdir -p workspace && touch workspace/file.txt"
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - file.txt
+  say-secret:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Say Secret"
+          command: 'if [[ "${SECRET}" = "1234567890" ]]; then echo "OK"; else exit 255; fi'
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-      - sayhello:
+      - say-hello3
+      - say-hello2:
           requires:
             - say-hello
-      - say-goodbye
-      - say-goodmorning:
-          requires:
-            - say-goodbye
-
+            - say-hello3
+      - say-secret
