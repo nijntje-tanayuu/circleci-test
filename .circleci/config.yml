@@ -46,7 +46,7 @@ jobs:
       - checkout
       - run:
           name: "Say Secret"
-          command: 'if [[ "${SECRET}" = "1234567890" ]]; then echo "OK"; else exit 255; fi'
+          command: 'if [[ "${SECRET_NUMBER}" = "1234567890" ]]; then echo "OK"; else exit 255; fi'
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
